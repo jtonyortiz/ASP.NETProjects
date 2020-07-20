@@ -3,12 +3,18 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 namespace LanguageFeatures.Controllers
 {
     public class HomeController : Controller
     {
+
+        bool FilterByPrice(Product p)
+        {
+            return (p?.Price ?? 0) >= 20;
+        }
 
         //Index Action - Tells ASP.NET Core to render the default view 
         //with an array of strings as its view model, which will be 
@@ -102,6 +108,7 @@ namespace LanguageFeatures.Controllers
             return View("Index", new string[] {$"Total: {cartTotal:C2}"});
             */
 
+            /*
             ShoppingCart cart =
                 new ShoppingCart { Products = Product.GetProducts() };
             Product[] productArray =
@@ -112,12 +119,26 @@ namespace LanguageFeatures.Controllers
                 new Product{Name = "Corner Flag", Price = 34.95M}
             };
 
-            decimal arrayTotal = productArray.FilterByPrice(20).TotalPrices() ;
+            Func<Product, bool> nameFilter = delegate (Product prod)
+            {
+                return prod?.Name?[0] == 'S';
+            };
+
+            decimal priceFilterTotal = productArray.
+                Filter(p => (p?.Price ?? 0) >= 20).TotalPrices();
+            decimal nameFilterTotal = productArray.
+                Filter(p => p?.Name?[0] == 'S').TotalPrices();
+
 
             return View("Index", new string[]
             {
-                $"Array Total: {arrayTotal:C2}" 
+                $"Price Total: {priceFilterTotal:C2}",
+                $"Name Total: {nameFilterTotal:C2}" 
             });
+
+            */
+
+            return View(Product.GetProducts().Select(p => p?.Name));
 
         }
     }

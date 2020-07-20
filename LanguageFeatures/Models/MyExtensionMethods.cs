@@ -37,7 +37,7 @@ namespace LanguageFeatures.Models
         }
 
         //Filtering Collections of Objects:
-
+        /*
         public static IEnumerable<Product> FilterByPrice(
             this IEnumerable<Product> productEnum, decimal minimumPrice)
         {
@@ -46,6 +46,33 @@ namespace LanguageFeatures.Models
                 if((prod?.Price ?? 0) >= minimumPrice)
                 {
                     yield return prod; // prod - apply selection criteria to product a reduced set of results:
+                }
+            }
+        }
+
+        public static IEnumerable<Product> FilterByName(
+            this IEnumerable<Product> productEnum, char 
+            firstLetter)
+        {
+            foreach (Product prod in productEnum)
+            {
+                if(prod?.Name?[0] == firstLetter)
+                {
+                    yield return prod;
+                }
+            }
+        }
+        */
+
+        public static IEnumerable<Product> Filter(
+            this IEnumerable<Product> productEnum,
+            Func<Product, bool> selector)
+        {
+            foreach(Product prod in productEnum)
+            {
+                if(selector(prod))
+                {
+                    yield return prod;
                 }
             }
         }
